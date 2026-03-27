@@ -1,7 +1,7 @@
 # GoSim-Iter 🚀
 ### Discrete Event Simulation Engine for Go 1.23+
 
-**GoSim-Iter** é um motor de simulação de eventos discretos (DES) de alta performance, projetado para ser leve, determinístico e extremamente escalável. Diferente de outras bibliotecas que utilizam goroutines e canais para cada processo, esta biblioteca utiliza os novos **Iteradores nativos do Go 1.23 (`iter` package)** para gerenciar o fluxo de execução.
+**GoSim-Iter** é um motor de simulação de eventos discretos (DES) de alta performance, projetado para ser leve, determinístico e extremamente escalável. Inspirado fortemente pelo funcionamento e API da consagrada biblioteca Python **SimPy**, o projeto adapta esses conceitos clássicos de simulação para o ecossistema moderno do Go. Diferente de outras bibliotecas que utilizam goroutines e canais para cada processo, esta biblioteca utiliza os novos **Iteradores nativos do Go 1.23 (`iter` package)** para gerenciar o fluxo de execução.
 Ainda em versão pré-alfa
 
 ## 🌟 Diferenciais Técnicos
@@ -31,12 +31,14 @@ O projeto conta com exemplos executáveis completos na pasta `exemplos/`, demons
 - **[01_resource_example](./exemplos/01_resource_example/)**: Demonstra o uso de `Environment`, `WaitTime` e limites de capacidade através de `Resources` (ex: clientes aguardando atendimento num banco).
 - **[02_store_example](./exemplos/02_store_example/)**: Exemplo do padrão Produtor/Consumidor utilizando `Store` para troca segura de pacotes e dados.
 - **[03_container_example](./exemplos/03_container_example/)**: Mostra o gerenciamento de níveis contínuos/quantitativos com `Container` (ex: abastecimento e consumo de um reservatório).
+- **[04_event_example](./exemplos/04_event_example/)**: Demonstra sincronização entre múltiplos processos utilizando `Event` (ex: trabalhadores aguardando a chegada de peças).
 
 Para executá-los localmente:
 ```bash
 go run ./exemplos/01_resource_example/main.go
 go run ./exemplos/02_store_example/main.go
 go run ./exemplos/03_container_example/main.go
+go run ./exemplos/04_event_example/main.go
 ```
 
 ### Recursos e Tempo
