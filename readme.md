@@ -78,7 +78,7 @@ func meuConsumidor(yield func(Command) bool) {
 | **Resources** | ✅ | Gerenciamento de capacidade com fila de prioridade e FIFO. |
 | **Iter.Pull Integration** | ✅ | Ciclo de vida completo (Created -> Running -> Terminated). |
 | **Stores** | ✅ | Fila genérica (`Store[T]`) de dados/pacotes com suspensão por backpressure. |
-| **Containers** | 🚧 | **Planejado** (Gerenciamento de recursos contínuos, ex: fluidos, baterias). |
+| **Containers** | ✅ | (Gerenciamento de recursos contínuos, ex: fluidos, baterias). |
 | **FilterStores** | 🚧 | **Planejado** (Filas de dados com extração bloqueante baseada em funções de filtro). |
 | **Events (Triggers)** | 🚧 | **Planejado** (Sinalização manual simples de sucesso/falha entre processos). |
 | **WaitAny/All** | 🚧 | **Planejado** (Sincronização complexa de multiplos eventos Condition/AllOf/AnyOf). |
