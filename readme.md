@@ -26,6 +26,19 @@ A biblioteca é dividida em quatro pilares fundamentais:
 
 ## 💻 Exemplos de Implementação
 
+O projeto conta com exemplos executáveis completos na pasta `exemplos/`, demonstrando cenários reais de uso:
+
+- **[01_resource_example](./exemplos/01_resource_example/)**: Demonstra o uso de `Environment`, `WaitTime` e limites de capacidade através de `Resources` (ex: clientes aguardando atendimento num banco).
+- **[02_store_example](./exemplos/02_store_example/)**: Exemplo do padrão Produtor/Consumidor utilizando `Store` para troca segura de pacotes e dados.
+- **[03_container_example](./exemplos/03_container_example/)**: Mostra o gerenciamento de níveis contínuos/quantitativos com `Container` (ex: abastecimento e consumo de um reservatório).
+
+Para executá-los localmente:
+```bash
+go run ./exemplos/01_resource_example/main.go
+go run ./exemplos/02_store_example/main.go
+go run ./exemplos/03_container_example/main.go
+```
+
 ### Recursos e Tempo
 Escreva seus processos de simulação de forma sequencial, como se fossem threads reais, utilizando o `yield` para suspender a execução:
 
