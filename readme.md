@@ -94,8 +94,8 @@ func meuConsumidor(yield func(Command) bool) {
 | **Iter.Pull Integration** | ✅ | Ciclo de vida completo (Created -> Running -> Terminated). |
 | **Stores** | ✅ | Fila genérica (`Store[T]`) de dados/pacotes com suspensão por backpressure. |
 | **Containers** | ✅ | (Gerenciamento de recursos contínuos, ex: fluidos, baterias). |
+| **Events (Triggers)** | ✅ | (Sinalização manual simples de sucesso/falha entre processos). |
 | **FilterStores** | 🚧 | **Planejado** (Filas de dados com extração bloqueante baseada em funções de filtro). |
-| **Events (Triggers)** | 🚧 | **Planejado** (Sinalização manual simples de sucesso/falha entre processos). |
 | **WaitAny/All** | 🚧 | **Planejado** (Sincronização complexa de multiplos eventos Condition/AllOf/AnyOf). |
 | **Preemptive Resources** | 🚧 | **Planejado** (Recursos com interrupção forçada/preempção de processos de baixa prioridade). |
 
