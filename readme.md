@@ -2,6 +2,7 @@
 ### Discrete Event Simulation Engine for Go 1.23+
 
 **GoSim-Iter** é um motor de simulação de eventos discretos (DES) de alta performance, projetado para ser leve, determinístico e extremamente escalável. Diferente de outras bibliotecas que utilizam goroutines e canais para cada processo, esta biblioteca utiliza os novos **Iteradores nativos do Go 1.23 (`iter` package)** para gerenciar o fluxo de execução.
+Ainda em versão pré-alfa
 
 ## 🌟 Diferenciais Técnicos
 
