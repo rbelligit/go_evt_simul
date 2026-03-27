@@ -34,6 +34,7 @@ O projeto conta com exemplos executáveis completos na pasta `exemplos/`, demons
 - **[02_store_example](./exemplos/02_store_example/)**: Exemplo do padrão Produtor/Consumidor utilizando `Store` para troca segura de pacotes e dados.
 - **[03_container_example](./exemplos/03_container_example/)**: Mostra o gerenciamento de níveis contínuos/quantitativos com `Container` (ex: abastecimento e consumo de um reservatório).
 - **[04_event_example](./exemplos/04_event_example/)**: Demonstra sincronização entre múltiplos processos utilizando `Event` (ex: trabalhadores aguardando a chegada de peças).
+- **[04_filter_store_example](./exemplos/04_filter_store_example/)**: Demonstra o uso de `FilterStore` com consumidores aguardando itens específicos baseados em funções de filtro.
 
 Para executá-los localmente:
 ```bash
@@ -41,6 +42,7 @@ go run ./exemplos/01_resource_example/main.go
 go run ./exemplos/02_store_example/main.go
 go run ./exemplos/03_container_example/main.go
 go run ./exemplos/04_event_example/main.go
+go run ./exemplos/04_filter_store_example/main.go
 ```
 
 ### Recursos e Tempo
@@ -97,7 +99,7 @@ func meuConsumidor(yield func(Command) bool) {
 | **Stores** | ✅ | Fila genérica (`Store[T]`) de dados/pacotes com suspensão por backpressure. |
 | **Containers** | ✅ | (Gerenciamento de recursos contínuos, ex: fluidos, baterias). |
 | **Events (Triggers)** | ✅ | (Sinalização manual simples de sucesso/falha entre processos). |
-| **FilterStores** | 🚧 | **Planejado** (Filas de dados com extração bloqueante baseada em funções de filtro). |
+| **FilterStores** | ✅ | Filas de dados com extração bloqueante baseada em funções de filtro. |
 | **WaitAny/All** | 🚧 | **Planejado** (Sincronização complexa de multiplos eventos Condition/AllOf/AnyOf). |
 | **Preemptive Resources** | 🚧 | **Planejado** (Recursos com interrupção forçada/preempção de processos de baixa prioridade). |
 

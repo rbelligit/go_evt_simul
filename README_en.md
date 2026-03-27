@@ -34,6 +34,7 @@ The project features complete executable examples in the `exemplos/` folder, dem
 - **[02_store_example](./exemplos/02_store_example/)**: Example of the Producer/Consumer pattern using `Store` for secure exchange of packages and data.
 - **[03_container_example](./exemplos/03_container_example/)**: Shows the management of continuous/quantitative levels with `Container` (e.g., filling and consuming a reservoir).
 - **[04_event_example](./exemplos/04_event_example/)**: Demonstrates synchronization between multiple processes using `Event` (e.g., workers waiting for the arrival of parts).
+- **[04_filter_store_example](./exemplos/04_filter_store_example/)**: Demonstrates the use of `FilterStore` with consumers waiting for specific items based on filter functions.
 
 To run them locally:
 ```bash
@@ -41,6 +42,7 @@ go run ./exemplos/01_resource_example/main.go
 go run ./exemplos/02_store_example/main.go
 go run ./exemplos/03_container_example/main.go
 go run ./exemplos/04_event_example/main.go
+go run ./exemplos/04_filter_store_example/main.go
 ```
 
 ### Resources and Time
@@ -97,7 +99,7 @@ func myConsumer(yield func(Command) bool) {
 | **Stores** | ✅ | Generic queue (`Store[T]`) of data/packages with backpressure suspension. |
 | **Containers** | ✅ | (Continuous resource management, e.g., fluids, batteries). |
 | **Events (Triggers)** | ✅ | (Simple manual success/failure signaling between processes). |
-| **FilterStores** | 🚧 | **Planned** (Data queues with blocking extraction based on filter functions). |
+| **FilterStores** | ✅ | Data queues with blocking extraction based on filter functions. |
 | **WaitAny/All** | 🚧 | **Planned** (Complex synchronization of multiple events Condition/AllOf/AnyOf). |
 | **Preemptive Resources** | 🚧 | **Planned** (Resources with forced interruption/preemption of low-priority processes). |
 
