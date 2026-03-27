@@ -24,8 +24,9 @@ A biblioteca é dividida em quatro pilares fundamentais:
 
 ---
 
-## 💻 Exemplo de Implementação
+## 💻 Exemplos de Implementação
 
+### Recursos e Tempo
 Escreva seus processos de simulação de forma sequencial, como se fossem threads reais, utilizando o `yield` para suspender a execução:
 
 ```go
@@ -51,6 +52,21 @@ func meuProcesso(yield func(Command) bool) {
 }
 ```
 
+### Filas de Dados genéricas (`Store[T]`)
+Troque mensagens blocantes entre corrotinas com segurança estrita da simulação:
+
+```go
+func meuProdutor(yield func(Command) bool) {
+    yield(store.Put("Pacote A", 10)) // Suspende processo se Buffer > Capacidade configurada
+}
+
+func meuConsumidor(yield func(Command) bool) {
+    var pacote string
+    yield(store.Get(&pacote, 10)) // Suspende processo se Buffer == 0
+    fmt.Println("Processado:", pacote)
+}
+```
+
 ---
 
 ## 🛠️ Status das Funcionalidades
@@ -61,7 +77,7 @@ func meuProcesso(yield func(Command) bool) {
 | **WaitTime** | ✅ | Suspensão de processos por duração específica. |
 | **Resources** | ✅ | Gerenciamento de capacidade com fila de prioridade e FIFO. |
 | **Iter.Pull Integration** | ✅ | Ciclo de vida completo (Created -> Running -> Terminated). |
-| **Stores** | 🚧 | **Em desenvolvimento** (Fila de dados/pacotes para redes). |
+| **Stores** | ✅ | Fila genérica (`Store[T]`) de dados/pacotes com suspensão por backpressure. |
 | **WaitAny/All** | 🚧 | **Planejado** (Sincronização complexa de eventos). |
 
 ---
