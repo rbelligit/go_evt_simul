@@ -59,7 +59,7 @@ func main() {
 
 	// Start simulation. We cap at 30 seconds.
 	env.StartSimul(30 * time.Second)
-
+	
 	fmt.Println("Simulation Complete!")
 	fmt.Printf("Total Simulated Time: %v\n", env.GetTime())
 }

@@ -34,7 +34,8 @@ O projeto conta com exemplos executáveis completos na pasta `exemplos/`, demons
 - **[02_store_example](./exemplos/02_store_example/)**: Exemplo do padrão Produtor/Consumidor utilizando `Store` para troca segura de pacotes e dados.
 - **[03_container_example](./exemplos/03_container_example/)**: Mostra o gerenciamento de níveis contínuos/quantitativos com `Container` (ex: abastecimento e consumo de um reservatório).
 - **[04_event_example](./exemplos/04_event_example/)**: Demonstra sincronização entre múltiplos processos utilizando `Event` (ex: trabalhadores aguardando a chegada de peças).
-- **[05_filter_store_example](./exemplos/04_filter_store_example/)**: Demonstra o uso de `FilterStore` com consumidores aguardando itens específicos baseados em funções de filtro.
+- **[05_filter_store_example](./exemplos/05_filter_store_example/)**: Demonstra o uso de `FilterStore` com consumidores aguardando itens específicos baseados em funções de filtro.
+- **[06_network_switch_queues](./exemplos/06_network_switch_queues/)**: Demonstra o uso avançado de `QoSStore` com balanceamento em múltiplas filas de prioridade (SWRR) num cenário de rede (`Switch`).
 
 Para executá-los localmente:
 ```bash
@@ -42,7 +43,8 @@ go run ./exemplos/01_resource_example/main.go
 go run ./exemplos/02_store_example/main.go
 go run ./exemplos/03_container_example/main.go
 go run ./exemplos/04_event_example/main.go
-go run ./exemplos/04_filter_store_example/main.go
+go run ./exemplos/05_filter_store_example/main.go
+go run ./exemplos/06_network_switch_queues/main.go
 ```
 
 ### Recursos e Tempo
@@ -100,8 +102,18 @@ func meuConsumidor(yield func(Command) bool) {
 | **Containers** | ✅ | (Gerenciamento de recursos contínuos, ex: fluidos, baterias). |
 | **Events (Triggers)** | ✅ | (Sinalização manual simples de sucesso/falha entre processos). |
 | **FilterStores** | ✅ | Filas de dados com extração bloqueante baseada em funções de filtro. |
+| **QoSStores** | ✅ | Filas genéricas otimizadas para Qualidade de Serviço, com múltiplas "Traffic Classes" usando Smooth Weighted Round Robin. |
 | **WaitAny/All** | 🚧 | **Planejado** (Sincronização complexa de multiplos eventos Condition/AllOf/AnyOf). |
 | **Preemptive Resources** | 🚧 | **Planejado** (Recursos com interrupção forçada/preempção de processos de baixa prioridade). |
+
+---
+
+## 🧩 Components (Extensões)
+
+O projeto também começou a introduzir abstrações de mais alto nível para domínios específicos de simulação (como Redes):
+
+- **[Switch](./components/switch.go)** (✅ **Ativo**): Roteador base com tabela MAC de auto-aprendizado, integrando o `QoSStore` para modelar portas de saída e mapeamento de *Traffic Class*.
+- **NetworkLink / Cable** (🚧 **Planejado**): Representará o meio físico entre atores da rede (Switches, Hosts), introduzindo latência configurável e limites estreitos de banda sob a ótica de *Discrete Event Simulation*.
 
 ---
 

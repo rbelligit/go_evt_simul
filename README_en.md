@@ -34,7 +34,8 @@ The project features complete executable examples in the `exemplos/` folder, dem
 - **[02_store_example](./exemplos/02_store_example/)**: Example of the Producer/Consumer pattern using `Store` for secure exchange of packages and data.
 - **[03_container_example](./exemplos/03_container_example/)**: Shows the management of continuous/quantitative levels with `Container` (e.g., filling and consuming a reservoir).
 - **[04_event_example](./exemplos/04_event_example/)**: Demonstrates synchronization between multiple processes using `Event` (e.g., workers waiting for the arrival of parts).
-- **[05_filter_store_example](./exemplos/04_filter_store_example/)**: Demonstrates the use of `FilterStore` with consumers waiting for specific items based on filter functions.
+- **[05_filter_store_example](./exemplos/05_filter_store_example/)**: Demonstrates the use of `FilterStore` with consumers waiting for specific items based on filter functions.
+- **[06_network_switch_queues](./exemplos/06_network_switch_queues/)**: Demonstrates advanced usage of `QoSStore` with priority queue balancing (SWRR) in a network scenario (`Switch`).
 
 To run them locally:
 ```bash
@@ -42,7 +43,8 @@ go run ./exemplos/01_resource_example/main.go
 go run ./exemplos/02_store_example/main.go
 go run ./exemplos/03_container_example/main.go
 go run ./exemplos/04_event_example/main.go
-go run ./exemplos/04_filter_store_example/main.go
+go run ./exemplos/05_filter_store_example/main.go
+go run ./exemplos/06_network_switch_queues/main.go
 ```
 
 ### Resources and Time
@@ -100,8 +102,18 @@ func myConsumer(yield func(Command) bool) {
 | **Containers** | ✅ | (Continuous resource management, e.g., fluids, batteries). |
 | **Events (Triggers)** | ✅ | (Simple manual success/failure signaling between processes). |
 | **FilterStores** | ✅ | Data queues with blocking extraction based on filter functions. |
+| **QoSStores** | ✅ | Generic queues optimized for Quality of Service, featuring multiple Traffic Classes via Smooth Weighted Round Robin algorithms. |
 | **WaitAny/All** | 🚧 | **Planned** (Complex synchronization of multiple events Condition/AllOf/AnyOf). |
 | **Preemptive Resources** | 🚧 | **Planned** (Resources with forced interruption/preemption of low-priority processes). |
+
+---
+
+## 🧩 Components (Extensions)
+
+The project has also started introducing higher-level abstractions for specific simulation domains (e.g. Networks):
+
+- **[Switch](./components/switch.go)** (✅ **Active**): A basic packet router with self-learning MAC tables, backed by `QoSStore` to model output ports and Traffic Class mapping.
+- **NetworkLink / Cable** (🚧 **Planned**): Will represent the physical medium connecting network actors (Switches, Hosts), effectively introducing configurable latency and strict bandwidth limits strictly tailored for *Discrete Event Simulation*.
 
 ---
 

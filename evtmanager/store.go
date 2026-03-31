@@ -5,8 +5,8 @@ import "container/heap"
 // StoreReq representa um processo aguardando para fazer um Put ou Get
 type StoreReq[T any] struct {
 	proc      *Process
-	item      T    // Preenchido quando é um request de Put
-	target    *T   // Ponteiro para onde salvar o dado quando é Get
+	item      T  // Preenchido quando é um request de Put
+	target    *T // Ponteiro para onde salvar o dado quando é Get
 	priority  int
 	indiceOrd int64
 	index     int
@@ -104,6 +104,10 @@ func (s *Store[T]) Put(item T, prio int) Command {
 		s.indAt++
 		heap.Push(&s.putQueue, req)
 	}
+}
+
+func (s *Store[T]) Len() int {
+	return len(s.items) + len(s.putQueue)
 }
 
 // Get tenta retirar um item do Store. Se estiver vazio, o processo é suspenso.
