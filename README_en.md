@@ -36,6 +36,7 @@ The project features complete executable examples in the `exemplos/` folder, dem
 - **[04_event_example](./exemplos/04_event_example/)**: Demonstrates synchronization between multiple processes using `Event` (e.g., workers waiting for the arrival of parts).
 - **[05_filter_store_example](./exemplos/05_filter_store_example/)**: Demonstrates the use of `FilterStore` with consumers waiting for specific items based on filter functions.
 - **[06_network_switch_queues](./exemplos/06_network_switch_queues/)**: Demonstrates advanced usage of `QoSStore` with priority queue balancing (SWRR) in a network scenario (`Switch`).
+- **[07_conditions_example](./exemplos/07_conditions_example/)**: Demonstrates the use of simultaneous Meta-Conditions (`AnyOf`) with safe cancellation across `Container`, `Resource`, and `Timeout`.
 
 To run them locally:
 ```bash
@@ -45,6 +46,7 @@ go run ./exemplos/03_container_example/main.go
 go run ./exemplos/04_event_example/main.go
 go run ./exemplos/05_filter_store_example/main.go
 go run ./exemplos/06_network_switch_queues/main.go
+go run ./exemplos/07_conditions_example/main.go
 ```
 
 ### Resources and Time
@@ -88,6 +90,31 @@ func myConsumer(yield func(Command) bool) {
 }
 ```
 
+### Simultaneous Conditions and Auto-Cancellation (AnyOf / AllOf)
+Create highly complex competition logic with tolerance and fallback easily:
+
+```go
+func impatientWorker(yield func(Command) bool) {
+    // 1. I want to acquire a resource
+    acqEvt := ResourceAcquireEvent(env, machine, 1, 0)
+    
+    // 2. But I only have 5 seconds of patience
+    tOut := TimeoutEvent(env, 5 * time.Second)
+
+    // 3. We suspend waiting for whichever happens first!
+    // Magic: If the timeout expires, the machine request is safely CANCELED!
+    if !yield(env.AnyOf(acqEvt, tOut).Wait()) {
+        return // Handle early exit
+    }
+
+    if tOut.IsTriggered() {
+        fmt.Println("I give up! It took too long.")
+    } else {
+        fmt.Println("Got the machine!")
+    }
+}
+```
+
 ---
 
 ## 🛠️ Feature Status
@@ -103,7 +130,7 @@ func myConsumer(yield func(Command) bool) {
 | **Events (Triggers)** | ✅ | (Simple manual success/failure signaling between processes). |
 | **FilterStores** | ✅ | Data queues with blocking extraction based on filter functions. |
 | **QoSStores** | ✅ | Generic queues optimized for Quality of Service, featuring multiple Traffic Classes via Smooth Weighted Round Robin algorithms. |
-| **WaitAny/All** | 🚧 | **Planned** (Complex synchronization of multiple events Condition/AllOf/AnyOf). |
+| **Meta Conditions (AnyOf/AllOf)** | ✅ | Complex event synchronization, Timeout support and Event Helpers with auto-cancellation (Safe fallback). |
 | **Preemptive Resources** | 🚧 | **Planned** (Resources with forced interruption/preemption of low-priority processes). |
 
 ---

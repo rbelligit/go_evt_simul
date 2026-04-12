@@ -78,6 +78,7 @@ func (ev *Environment) StartSimul(runFor time.Duration) error {
 		proc := heap.Pop(&ev.queue).(*Process)
 
 		if proc.nextRun > targetTime {
+			heap.Push(&ev.queue, proc) // BUG FIX: Devolve para a fila, senão perdemos o evento que ia acontecer no futuro!
 			break
 		}
 

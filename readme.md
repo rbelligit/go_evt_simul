@@ -36,6 +36,7 @@ O projeto conta com exemplos executáveis completos na pasta `exemplos/`, demons
 - **[04_event_example](./exemplos/04_event_example/)**: Demonstra sincronização entre múltiplos processos utilizando `Event` (ex: trabalhadores aguardando a chegada de peças).
 - **[05_filter_store_example](./exemplos/05_filter_store_example/)**: Demonstra o uso de `FilterStore` com consumidores aguardando itens específicos baseados em funções de filtro.
 - **[06_network_switch_queues](./exemplos/06_network_switch_queues/)**: Demonstra o uso avançado de `QoSStore` com balanceamento em múltiplas filas de prioridade (SWRR) num cenário de rede (`Switch`).
+- **[07_conditions_example](./exemplos/07_conditions_example/)**: Demonstra o uso de Meta-Condições simultâneas (`AnyOf`) com cancelamento seguro entre `Container`, `Resource` e `Timeout`.
 
 Para executá-los localmente:
 ```bash
@@ -45,6 +46,7 @@ go run ./exemplos/03_container_example/main.go
 go run ./exemplos/04_event_example/main.go
 go run ./exemplos/05_filter_store_example/main.go
 go run ./exemplos/06_network_switch_queues/main.go
+go run ./exemplos/07_conditions_example/main.go
 ```
 
 ### Recursos e Tempo
@@ -88,6 +90,31 @@ func meuConsumidor(yield func(Command) bool) {
 }
 ```
 
+### Condições Simultâneas e Cancelamento Automático (AnyOf / AllOf)
+Crie lógicas complexas de concorrência com desistência e tolerância facilmente:
+
+```go
+func trabalhadorIrritado(yield func(Command) bool) {
+    // 1. Quero pegar o recurso
+    acqEvt := ResourceAcquireEvent(env, maquina, 1, 0)
+    
+    // 2. Mas tenho paciência de apenas 5 segundos
+    tOut := TimeoutEvent(env, 5 * time.Second)
+
+    // 3. Suspendemos aguardando o que acontecer primeiro!
+    // Magia: Se o timeout vencer, o pedido na máquina é CANCELADO com segurança!
+    if !yield(env.AnyOf(acqEvt, tOut).Wait()) {
+        return
+    }
+
+    if tOut.IsTriggered() {
+        fmt.Println("Desisto! Demorou muito.")
+    } else {
+        fmt.Println("Consegui a máquina!")
+    }
+}
+```
+
 ---
 
 ## 🛠️ Status das Funcionalidades
@@ -103,7 +130,7 @@ func meuConsumidor(yield func(Command) bool) {
 | **Events (Triggers)** | ✅ | (Sinalização manual simples de sucesso/falha entre processos). |
 | **FilterStores** | ✅ | Filas de dados com extração bloqueante baseada em funções de filtro. |
 | **QoSStores** | ✅ | Filas genéricas otimizadas para Qualidade de Serviço, com múltiplas "Traffic Classes" usando Smooth Weighted Round Robin. |
-| **WaitAny/All** | 🚧 | **Planejado** (Sincronização complexa de multiplos eventos Condition/AllOf/AnyOf). |
+| **Meta Condições (AnyOf/AllOf)** | ✅ | Sincronização complexa de eventos, suporte a Timeout e Helpers com auto-cancelamento (Desistência limpa). |
 | **Preemptive Resources** | 🚧 | **Planejado** (Recursos com interrupção forçada/preempção de processos de baixa prioridade). |
 
 ---

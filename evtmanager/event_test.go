@@ -102,3 +102,59 @@ func TestEvent_MultipleWaiters(t *testing.T) {
 		t.Errorf("Processo B não foi acordado")
 	}
 }
+
+func TestEvent_Cancel(t *testing.T) {
+	env := NewEnvironment()
+	evt := env.NewEvent("TesteEventCancel")
+
+	var tempoAcordou time.Duration
+	wasCanceled := false
+
+	evt.AddCancelCallback(func() {
+		wasCanceled = true
+	})
+
+	env.AddTask(func(yield func(Command) bool) {
+		yield(evt.Wait())
+		tempoAcordou = env.GetTime()
+	}, 0)
+
+	env.AddTask(func(yield func(Command) bool) {
+		yield(WaitTime(5 * time.Second))
+		evt.Cancel()
+	}, 0)
+
+	env.StartSimul(10 * time.Second)
+
+	if !wasCanceled {
+		t.Errorf("Cancel callback não foi chamado")
+	}
+
+	if tempoAcordou != 5*time.Second {
+		t.Errorf("Processo deveria ter sido acordado pelo cancel no tempo 5, mas acordou no %v", tempoAcordou)
+	}
+}
+
+func TestEvent_CancelPreventsSucceed(t *testing.T) {
+	env := NewEnvironment()
+	evt := env.NewEvent("Event")
+
+	var callbackCalled bool
+	evt.AddCallback(func() { // Callback should NOT be called
+		callbackCalled = true
+	})
+
+	env.AddTask(func(yield func(Command) bool) {
+		evt.Cancel()
+		yield(evt.Succeed()) // should do nothing
+	}, 0)
+
+	env.StartSimul(10 * time.Second)
+
+	if evt.IsTriggered() {
+		t.Errorf("Event was marked as triggered despite being canceled")
+	}
+	if callbackCalled {
+		t.Errorf("Succeed callback was called despite being canceled")
+	}
+}
